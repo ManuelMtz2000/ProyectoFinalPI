@@ -57,7 +57,7 @@ class InventarioController extends Controller
      */
     public function show(Inventario $inventario)
     {
-        //
+        return view('/inventario/inventarioShow', compact('inventario'));
     }
 
     /**
@@ -68,7 +68,7 @@ class InventarioController extends Controller
      */
     public function edit(Inventario $inventario)
     {
-        //
+        return view('/inventario/inventarioForm', compact('inventario'));
     }
 
     /**
@@ -80,7 +80,17 @@ class InventarioController extends Controller
      */
     public function update(Request $request, Inventario $inventario)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|min:5|max:20',
+            'categoria' => 'required',
+            'precio' => 'required|numeric',
+            'precio_cliente' => 'required|numeric',
+            'cantidad' => 'required|integer',
+        ]);
+        $request->merge([
+            'descripcion' => $request->descripcion ?? '']);
+        Inventario::where('id', $inventario->id)->update($request->except('_method','_token'));
+        return redirect()->route('inventario.index');
     }
 
     /**
@@ -91,6 +101,7 @@ class InventarioController extends Controller
      */
     public function destroy(Inventario $inventario)
     {
-        //
+        $inventario->delete();
+        return redirect()->route('inventario.index');
     }
 }

@@ -1,24 +1,31 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Inventario de productos.</h1>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-        </tr>
-        @foreach ($inventario as $inv)
+@extends('layouts.app')
+@section('contenido')
+    <h1 class="display-3">Inventario de productos.</h1>
+    <hr class="sidebar-divider">
+    <a class ="btn btn-primary" href="/inventario/create" role="button">Dar de alta nuevo producto.</a>
+    <br><br>
+    <div class="table-responsive">
+        <table class="table table-striped">
             <tr>
-                <td>{{ $inv->id }}</td>
-                <td><a href="/inventario/{{ $inv->id }}">{{ $inv->nombre }}</a></td>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Precio</th>
+                <th>Precio para clientes</th>
+                <th>Cantidad disponible</th>
+                <th>Descripción</th>
             </tr>
-        @endforeach
-    </table>
-</body>
-</html>
+            @foreach ($inventario as $inv)
+                <tr>
+                    <td>{{ $inv->id }}</td>
+                    <td><a href="/inventario/{{ $inv->id }}">{{ $inv->nombre }}</a></td>
+                    <td>{{ $inv->categoria }}</td>
+                    <td>{{ $inv->precio}}</td>
+                    <td>{{ $inv->precio_cliente }}</td>
+                    <td>{{ $inv->cantidad }}</td>
+                    <td>{{ $inv->descripcion }}</td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
+@endsection

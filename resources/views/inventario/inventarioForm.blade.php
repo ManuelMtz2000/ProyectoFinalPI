@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
+@section('contenido')
     @if ($errors->any())
     <div>
         <ul>
@@ -17,25 +10,43 @@
     </div>
     @endif
     <h1>Información del producto.</h1>
-    <form action="{{ route('inventario.store')}}" method="POST">
+    <hr class="sidebar-divider">
+    @if(isset($inventario))
+        <form action="{{ route('inventario.update',[$inventario])}}" method="POST">
+            @method('patch')
+    @else
+        <form action="{{ route('inventario.store')}}" method="POST">
+    @endif
         @csrf
-        <label for="nombre">Nombre del producto:</label>
-        <input type="text" name="nombre" value="{{ old('nombre') }}"><br>
-        <label for="categoria">Categoria: </label>
-        <select name="categoria">
-            <option value="sonido" {{ old('categoria') == 'sonido' ? 'selected' : '' }}>Sonido</option>
-            <option value="accesorios" {{ old('categoria') == 'accesorios' ? 'selected' : '' }}>Accesorios para celular</option>
-            <option value="otros" {{ old('categoria') == 'otros' ? 'selected' : '' }}>Otros</option>
-        </select><br>
-        <label for="precio">Precio: </label>
-        <input type="number" name="precio" value="{{ old('precio') }}"><br>
-        <label for="precio_cliente">Preco para cliente: </label>
-        <input type="number" name="precio_cliente" value="{{ old('precio_cliente') }}"><br>
-        <label for="cantidad">Cantidad: </label>
-        <input type="number" name="cantidad" value="{{ old('cantidad') }}"><br>
-        <label for="descripcion">Descripcion del producto: </label>
-        <textarea name="descripcion"cols="30" rows="10">{{ old('descripcion') }}</textarea><br>
-        <button type="submit">Enviar</button>
+        <div class="form-group">
+            <label for="nombre" class="col-lg-3">Nombre del producto:</label>
+            <input type="text" name="nombre" value="{{ old('nombre') ?? $inventario->nombre ?? ''}}" style="width: 400px; heigth: 15px"><br>
+        </div>
+        <div class="form-group text-">
+            <label for="categoria" class="col-lg-3">Categoria: </label>
+            <select name="categoria" style="width: 400px; heigth: 15px">
+                <option value="sonido" {{ old('categoria') == 'sonido' ? 'selected' : '' }}{{ isset($inventario) && $inventario->categoria == 'sonido' ? 'selected' : ''}}>Sonido</option>
+                <option value="accesorios" {{ old('categoria') == 'accesorios' ? 'selected' : '' }}{{ isset($inventario) && $inventario->categoria == 'accesorios' ? 'selected' : ''}}>Accesorios para celular</option>
+                <option value="otros" {{ old('categoria') == 'otros' ? 'selected' : '' }}{{ isset($inventario) && $inventario->categoria == 'otros' ? 'selected' : ''}}>Otros</option>
+            </select><br>
+        </div>
+        <div class="form-group">
+            <label for="precio" class="col-lg-3">Precio: </label>
+            <input type="number" name="precio" value="{{ old('precio') ?? $inventario->precio ?? ''}}" style="width: 400px; heigth: 15px"><br>
+        </div>
+        <div class="form-group">
+            <label for="precio_cliente" class="col-lg-3">Preco para cliente: </label>
+            <input type="number" name="precio_cliente" value="{{ old('precio_cliente') ?? $inventario->precio_cliente ?? ''}}" style="width: 400px; heigth: 15px"><br>
+        </div>
+        <div class="form-group">
+            <label for="cantidad" class="col-lg-3">Cantidad: </label>
+            <input type="number" name="cantidad" value="{{ old('cantidad') ?? $inventario->cantidad ?? ''}}" style="width: 400px; heigth: 15px"><br>
+        </div>
+        <div class="form-group">
+            <label for="descripcion" class="col-lg-3">Descripcion del producto: </label>
+            <textarea name="descripcion"cols="47" rows="10"">{{ old('descripcion') ?? $inventario->descripcion ?? ''}}</textarea><br>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <br>
     </form>
-</body>
-</html>
+@endsection
