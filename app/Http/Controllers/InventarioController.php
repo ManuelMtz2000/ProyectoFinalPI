@@ -14,7 +14,8 @@ class InventarioController extends Controller
      */
     public function index()
     {
-        //
+        $inventario = Inventario::get();
+        return view('/inventario/inventarioIndex', compact('inventario'));
     }
 
     /**
@@ -24,7 +25,7 @@ class InventarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('/inventario/inventarioForm');
     }
 
     /**
@@ -35,7 +36,17 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|min:5|max:20',
+            'categoria' => 'required',
+            'precio' => 'required|numeric',
+            'precio_cliente' => 'required|numeric',
+            'cantidad' => 'required|integer',
+        ]);
+        $request->merge([
+            'descripcion' => $request->descripcion ?? '']);
+        Inventario::create($request->all());
+        return redirect('/inventario');
     }
 
     /**
