@@ -142,6 +142,9 @@
                 </form>
               </div>
             </li>
+            <!-- Nav Item - User Information -->
+            @include('layouts.menu-usuario') 
+            
 
           </ul>
 
